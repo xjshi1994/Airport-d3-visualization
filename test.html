@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>video lab</title>
+    <style>
+        button:hover{
+            color: green;
+        }
+    </style>
+    <script src = "d3.js"></script>
+</head>
+<body>
+    <div><input type="text"></div>
+    <div>Name: <input type = "date"/></div>
+    <button>click</button>
+    <a href="www.google.com">google</a>
+    <div id = "container">
+
+    </div>
+</body>
+
+<script>
+    let container = d3.select("#container"); // select the element in the page by the ID
+    let youth = []
+    d3.csv("clients.csv").then(loadData);
+    
+    function loadData(clients) {
+        clients = clients.map((c) => {
+            c.BMI = c.Weight / c.Age;
+            return c;
+        })
+        showBMI(clients);
+        showData(clients);
+    }
+
+    function ex2(clients){
+        clients.sort((c1, c2) => d3.ascending(c1.Weight, c2.Weight));
+
+        let filteredData = clients.filter((client) => client.Age == 31);
+        let ageList = clients.map((c) => c.Age);
+        console.log(ageList);
+        showData(filteredData);
+    }
+
+    function showData(clients) {
+        for (let client of clients) {
+            write(client.Name + ", " + client.Weight);
+        }
+
+        write("--------sum && mean------");
+        let sum = d3.sum(clients,(c) => c.Weight);
+        let mean = d3.mean(clients, (d) => d.Weight);
+        let extent = d3.extent(clients, (d) => d.Weight);
+        write(sum);
+        write(mean);
+        write(extent);
+    }
+    function showBMI(clients) {
+        for (let client of clients) {
+            write(client.Name + ", " + client.BMI);
+        }
+    }
+
+    function write(text) {
+        container.append("div").text(text);
+    }
+
+
+
+    
+</script>
+</html>

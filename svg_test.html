@@ -1,0 +1,49 @@
+<html>
+    <head>
+
+    </head>
+
+    <body>
+        <svg style = "border: solid 1px black">
+            <g transform =  "translate(50,50) rotate(60, 50,50)" >
+                <rect x = "10" y = "10"width = "50" height = "50"/>
+                <circle cx = "50" cy = "50" r = "25" fill = "red"/>
+                <text>sb</text>
+            </g>g>
+        </svg>
+        <br>
+        <button onclick="addClient()">add</button>
+        <button onclick="removeClient()">remove</button>
+        <div id = "container"></div>
+    </body>
+    <script src = "d3.js"></script>
+    <script>
+        let container = d3.select("#container");
+        let clients = [{"Name": "client0"}];
+        let count = 1;
+
+        function addClient() {
+            clients.push({"Name": "client" + count});
+            count += 1;
+            showData(clients);
+        }
+
+        function removeClient() {
+            clients = clients.slice(0, -1);
+            count -= 1;
+            showData(clients)
+        }
+
+        function showData(clients) {
+            let join = container
+                            .selectAll("div")
+                            .data(clients);
+            // enter for the new one
+            join.enter().append("div").text(d => d.Name + ": New");
+            join.exit().remove();
+            join.text(d => d.Name + ": Updated");
+        }
+
+        showData(clients)
+    </script>
+</html>
